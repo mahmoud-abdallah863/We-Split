@@ -20,3 +20,8 @@ and how much is for you tip.
   * Text
   * Sections
   * Pickers
+
+## Screen Shot
+
+
+<img src="https://github.com/mahmoud-abdallah863/We-Split/blob/main/app_screenshot.png" height="600">
