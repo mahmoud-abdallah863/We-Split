@@ -20,57 +20,82 @@ struct ContentView: View {
     
     var amountPerPerson: Double {
         // Converting string to double will return optional Double?
-        let orderAmount = Double(checkAmout) ?? -1
-        let peopleCount = Double(numberOfPeople) ?? -1
+        let orderAmount = Double(checkAmout) ?? 0
+        let peopleCount = Double(numberOfPeople) ?? 0
         let tipPercentage = Double(tipPercentages[tipPercentIndex])
          
         if orderAmount == -1 || peopleCount == -1 {
             return 0
         }
         
+        if peopleCount == 0{
+            return 0
+        }
+        
         return (orderAmount + orderAmount*tipPercentage/100) / peopleCount
     }
     
+    init() {
+        UITableView.appearance().backgroundColor = .clear
+    }
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    func getTextColor() -> Color {
+        return colorScheme == .dark  ? Color.white : Color.black
+    }
+    
+    
     var body: some View {
         
-        NavigationView {
-            Form {
-                
-                // Adding a header to a section require a Text view, cannot be a string
-                Section(header: Text("Check details")) {
-                    // 2-Way data binding
-                    // We need to tell textField where to get the data from,
-                    // and we also need to change the name variable when the textField change
-                    // it's value
-                    TextField("Check Amout", text: $checkAmout)
-                        .keyboardType(.numberPad)
-                    
-                    TextField("Number of people", text: $numberOfPeople)
-                }
-                
-                Section(header: Text("How much tip you want to learve?")) {
-                    Picker("Tip percent", selection: $tipPercentIndex) {
-                        ForEach(0 ..< self.tipPercentages.count) {
-                            Text("\(self.tipPercentages[$0])%")
-                        }
-                        // Changing the style of the picker
-                    }.pickerStyle(SegmentedPickerStyle())
-                }
-                
-                Section(header: Text("Amount per person")) {
-                    Text("$\(self.amountPerPerson, specifier: "%.2f")")
-                }
-                
-                Section(header: Text("Details")) {
-                    Text("Original amount: $\((checkAmout.isEmpty) ? "0" : checkAmout)")
-                    
-                    let tipAmount: Double = (Double(checkAmout) ?? 0) * Double(tipPercentages[tipPercentIndex]) / 100
-                    Text("Tip amount: $\(tipAmount, specifier: "%.2f")")
-                }
-            }
+        ZStack {
             
-//             displayMode: .inline -> Will decrease the text size and center it horizontaly
-            .navigationBarTitle("We Split", displayMode: .large)
+            LinearGradient(gradient: Gradient(colors: [Color.red, Color.black]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Text("We Split")
+                    .font(.largeTitle)
+                    .foregroundColor(getTextColor())
+                    .bold()
+                Form {
+                    
+                    // Adding a header to a section require a Text view, cannot be a string
+                    Section(header: Text("Check details").bold()) {
+                        // 2-Way data binding
+                        // We need to tell textField where to get the data from,
+                        // and we also need to change the name variable when the textField change
+                        // it's value
+                        TextField("Check Amout", text: $checkAmout)
+                            .keyboardType(.numberPad)
+                        
+                        TextField("Number of people", text: $numberOfPeople)
+                    }
+                    
+                    Section(header: Text("How much tip you want to learve?").bold()) {
+                        Picker("Tip percent", selection: $tipPercentIndex) {
+                            ForEach(0 ..< self.tipPercentages.count) {
+                                Text("\(self.tipPercentages[$0])%")
+                            }
+                            // Changing the style of the picker
+                        }.pickerStyle(SegmentedPickerStyle())
+                    }
+                    
+                    Section(header: Text("Amount per person").bold()) {
+                        Text("$\(self.amountPerPerson, specifier: "%.2f")")
+                    }
+                    
+                    Section(header: Text("Details").bold()) {
+                        Text("Original amount: $\((checkAmout.isEmpty) ? "0" : checkAmout)")
+                        
+                        let tipAmount: Double = (Double(checkAmout) ?? 0) * Double(tipPercentages[tipPercentIndex]) / 100
+                        Text("Tip amount: $\(tipAmount, specifier: "%.2f")")
+                    }
+                }
+                .foregroundColor(getTextColor())
+                
+    //             displayMode: .inline -> Will decrease the text size and center it horizontaly
+//                .navigationBarTitle("We Split", displayMode: .large)
+        }
             // Or
 //             .navigationBarTitle(Text("Swift UI"), displayMode: .inline)
             
