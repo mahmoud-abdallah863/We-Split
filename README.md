@@ -20,8 +20,9 @@ and how much is for you tip.
   * Text
   * Sections
   * Pickers
+  * Ligh/Dark mode support
 
 ## Screen Shot
 
 
-<img src="https://github.com/mahmoud-abdallah863/We-Split/blob/main/app_screenshot.png" height="600">
+<img src="https://github.com/mahmoud-abdallah863/We-Split/blob/main/app_screenshot_v2.png" height="600">
